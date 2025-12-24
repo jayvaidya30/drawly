@@ -1,7 +1,7 @@
 import { WebSocketServer } from "ws";
-const JWT_SECRET = "123";
 import jwt from "jsonwebtoken";
 const wss = new WebSocketServer({ port: 8080 });
+import { JWT_SECRET } from "@repo/backend-common/config";
 
 wss.on("connection", function connection(ws, request) {
   const url = request.url;

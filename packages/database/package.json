@@ -1,6 +1,7 @@
 {
   "name": "@repo/db",
   "version": "0.0.0",
+  "type": "module",
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
@@ -8,6 +9,7 @@
     "prisma": "^7.2.0"
   },
   "scripts": {
+    "build": "tsc && cp -r generated dist/generated",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy"
@@ -19,6 +21,8 @@
     "pg": "^8.16.3"
   },
   "exports": {
-    ".": "./src/index.ts"
-  }
+    ".": "./dist/src/index.js"
+  },
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts"
 }

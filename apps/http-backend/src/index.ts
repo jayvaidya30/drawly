@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -6,6 +7,7 @@ import { CreateUserSchema } from "@repo/common/types";
 import { prisma } from "@repo/db";
 
 const app = express();
+app.use(express.json());
 
 app.post("/signup", async (req, res) => {
   const result = CreateUserSchema.safeParse(req.body); // safeparse returns the error thing where as parse dosent provide error

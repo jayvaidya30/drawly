@@ -114,8 +114,8 @@ app.post("/room", middleware, async (req, res) => {
   try {
     const room = await prisma.room.create({
       data: {
-        slug: result.data.name,
-        adminId: userId,
+        slug: result.data.name, // slug is the name of room
+        adminId:  userId,
       },
     });
 

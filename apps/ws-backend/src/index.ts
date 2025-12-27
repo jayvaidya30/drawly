@@ -74,6 +74,7 @@ wss.on("connection", function connection(ws, request) {
       const roomId = parsedData.roomId;
       const message = parsedData.message;
 
+      //ideally this is where queue should be used but its okay for small case apps
       await prisma.chat.create({
         data: {
           roomId,

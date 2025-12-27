@@ -115,7 +115,7 @@ app.post("/room", middleware, async (req, res) => {
     const room = await prisma.room.create({
       data: {
         slug: result.data.name, // slug is the name of room
-        adminId:  userId,
+        adminId: userId,
       },
     });
 
@@ -124,9 +124,27 @@ app.post("/room", middleware, async (req, res) => {
     });
   } catch (error) {
     res.json({
-      message: "Room already exists with this name"
+      message: "Room already exists with this name",
     });
   }
+});
+
+app.get("/chats/:roomId", async (req, res) => {
+  const roomId = Number(req.params.roomId);
+
+  const messages = await prisma.chat.findMany({
+    where: {
+      roomId: roomId,
+    },
+    orderBy: {
+      id: "desc",
+    },
+    take: 50,
+  });
+
+  res.json({
+    messages,
+  });
 });
 
 app.listen(3001);

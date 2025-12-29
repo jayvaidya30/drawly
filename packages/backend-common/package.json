@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "exports": {
-    "./config": "./src/index.ts"
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

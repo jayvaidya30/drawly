@@ -1,7 +1,8 @@
 import { WebSocketServer } from "ws";
 import WebSocket from "ws";
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "@repo/backend-common/config";
+import * as backendCommon from "@repo/backend-common";
+const { JWT_SECRET } = backendCommon;
 import { prisma } from "@repo/db";
 
 const wss = new WebSocketServer({ port: 8080 });
@@ -55,8 +56,14 @@ wss.on("connection", function connection(ws, request) {
     ws,
   });
 
-  ws.on("message", async function (data) {
-    const parsedData = JSON.parse(data as unknown as string); // {type: join_room, roomId:1} this is in the form of string and we are parsing it to object
+  ws.on("message", async function messsage(data) {
+    let parsedData;
+    if (typeof data !== "string") {
+      parsedData = JSON.parse(data.toString());
+    } else {
+      parsedData = JSON.parse(data);
+    }
+
     if (parsedData.type === "join_room") {
       const user = users.find((x) => x.ws === ws);
       user?.rooms.push(parsedData.userId);
@@ -77,7 +84,7 @@ wss.on("connection", function connection(ws, request) {
       //ideally this is where queue should be used but its okay for small case apps
       await prisma.chat.create({
         data: {
-          roomId,
+          roomId: Number(roomId),
           message,
           userId,
         },

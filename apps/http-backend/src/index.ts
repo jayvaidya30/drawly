@@ -2,7 +2,9 @@ import "dotenv/config";
 import express from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { JWT_SECRET } from "@repo/backend-common/config";
+import * as backendCommon from "@repo/backend-common";
+import cors from "cors";
+const { JWT_SECRET } = backendCommon;
 import {
   CreateRoomSchema,
   CreateUserSchema,
@@ -13,6 +15,7 @@ import { middleware } from "./middleware.js";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.post("/signup", async (req, res) => {
   const result = CreateUserSchema.safeParse(req.body); // safeparse returns the error thing where as parse dosent provide error
@@ -162,8 +165,8 @@ app.get("room/:slug", async (req, res) => {
   }
 
   res.json({
-    room
-  })
+    room,
+  });
 });
 
 app.listen(3001);

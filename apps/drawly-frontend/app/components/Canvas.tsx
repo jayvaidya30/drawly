@@ -4,8 +4,9 @@ import { IconButton } from "./IconButton";
 import { PenIcon } from "../Icons/PenIcon";
 import { RectIcon } from "../Icons/RectangleIcon";
 import { CircleIcon } from "../Icons/CircleIcon";
+import { Game } from "../draw/Game";
 
-type Shape = "circle" | "rect" | "pencil";
+export type Tool = "circle" | "rect" | "pencil";
 
 export function Canvas({
   roomId,
@@ -15,17 +16,21 @@ export function Canvas({
   socket: WebSocket;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [selectedTool, setSelectedTool] = useState<Shape>("circle");
-
+  const [game, setGame] = useState<Game>();
+  const [selectedTool, setSelectedTool] = useState<Tool>("circle");
 
   useEffect(() => {
-    //@ts-ignore
-    window.selectedTool = selectedTool;
-  },[selectedTool])
+    game?.setTool(selectedTool);
+  }, [selectedTool]);
 
   useEffect(() => {
     if (canvasRef.current) {
-      initDraw(canvasRef.current, roomId, socket);
+      const g = new Game(canvasRef.current, roomId, socket);
+      setGame(g);
+
+      return () => {
+        g.destroy();
+      };
     }
   }, [canvasRef]);
 
@@ -48,8 +53,8 @@ function Topbar({
   selectedTool,
   setSelectedTool,
 }: {
-  selectedTool: Shape;
-  setSelectedTool: (s: Shape) => void;
+  selectedTool: Tool;
+  setSelectedTool: (s: Tool) => void;
 }) {
   return (
     <div style={{ position: "fixed", top: 10, left: 10 }}>

@@ -1,9 +1,5 @@
 import { HTTP_BACKEND } from "@/config";
 import axios from "axios";
-import {
-  DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS,
-  DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_REACT_NODES,
-} from "react";
 
 type Shape =
   | {
@@ -141,7 +137,6 @@ function clearCanvas(
       ctx.strokeStyle = "rgba(255,255,255)";
       ctx.strokeRect(shape.x, shape.y, shape.width, shape.height);
     } else if (shape.type === "circle") {
-
       ctx.beginPath();
       ctx.arc(shape.centerX, shape.centerY, shape.radius, 0, Math.PI * 2);
       ctx.stroke();
